@@ -5,14 +5,18 @@ import ValueForm from './ValueForm';
 import PaySlip from './PaySlip';  
 
 const Payroll = () => {
-    const [payrunPeriod, setPayrunPeriod] = useState('');
-    const [payrunType, setPayrunType] = useState('');
+    const [dateOfJoining, setDateOfJoining] = useState(''); // State for Date of Joining
+    const [payPeriod, setPayPeriod] = useState('');         // State for Pay Period
+    const [workDays, setWorkDays] = useState('');           // State for Work Days
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleSave = () => {
-        // Validate that both fields are filled
-        if (!payrunPeriod || !payrunType) {
-            setErrorMessage('Please fill in both fields');
+        // Validate that all fields are filled
+        if (!dateOfJoining || !payPeriod || !workDays) {
+            setErrorMessage('Please fill in all fields');
+            return;
+        } else if (workDays < 0) {
+            setErrorMessage('Work Days cannot be negative');
             return;
         } else {
             setErrorMessage('');
@@ -21,15 +25,17 @@ const Payroll = () => {
 
         // Optional logging, restricted to development mode
         if (process.env.NODE_ENV === 'development') {
-            console.log('Payrun Period:', payrunPeriod);
-            console.log('Payrun Generating Type:', payrunType);
+            console.log('Date of Joining:', dateOfJoining);
+            console.log('Pay Period:', payPeriod);
+            console.log('Work Days:', workDays);
         }
     };
 
     const handleCancel = () => {
         // Clear the form fields
-        setPayrunPeriod('');
-        setPayrunType('');
+        setDateOfJoining('');
+        setPayPeriod('');
+        setWorkDays('');
         setErrorMessage(''); // Clear error message when canceling
     };
 
@@ -70,29 +76,41 @@ const Payroll = () => {
                             {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
 
                             <Form>
-                                {/* Payrun Period Input */}
-                                <Form.Group controlId="payrunPeriod" className="mb-3">
-                                    <Form.Label>Payrun Period</Form.Label>
+                                {/* Date of Joining Input */}
+                                <Form.Group controlId="dateOfJoining">
+                                    <Form.Label>Date of Joining</Form.Label>
                                     <Form.Control
-                                        type="text"
-                                        value={payrunPeriod}
-                                        placeholder="Enter Payrun Period"
-                                        onChange={(e) => setPayrunPeriod(e.target.value)}
+                                        type="date"
+                                        value={dateOfJoining}
+                                        onChange={(e) => setDateOfJoining(e.target.value)}
                                     />
                                 </Form.Group>
 
-                                {/* Payrun Generating Type Dropdown */}
-                                <Form.Group controlId="payrunType" className="mb-3">
-                                    <Form.Label>Payrun Generating Type</Form.Label>
+                                {/* Pay Period Input */}
+                                <Form.Group controlId="payPeriod">
+                                    <Form.Label>Pay Period</Form.Label>
                                     <Form.Control
-                                        as="select"
-                                        value={payrunType}
-                                        onChange={(e) => setPayrunType(e.target.value)}
-                                    >
-                                        <option value="">Select Type</option>
-                                        <option value="hourly">Hourly wise</option>
-                                        <option value="salary">Monthly wise</option>
-                                    </Form.Control>
+                                        type="text"
+                                        value={payPeriod}
+                                        onChange={(e) => setPayPeriod(e.target.value)}
+                                        placeholder="Enter Pay Period (e.g., Jan 2024)"
+                                    />
+                                </Form.Group>
+
+                                {/* Work Days Input */}
+                                <Form.Group controlId="workDays">
+                                    <Form.Label>Work Days</Form.Label>
+                                    <Form.Control
+                                        type="number"
+                                        value={workDays}
+                                        onChange={(e) => {
+                                            const value = e.target.value;
+                                            if (value >= 0) {
+                                                setWorkDays(value);
+                                            }
+                                        }}
+                                        placeholder="Enter number of Work Days"
+                                    />
                                 </Form.Group>
 
                                 <div className="mt-4">

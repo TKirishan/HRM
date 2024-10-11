@@ -1,9 +1,14 @@
-import React from 'react';
-import { Table, Button, Card } from 'react-bootstrap';
+import React, { useState } from "react";
+import { Table, Button, Card } from "react-bootstrap";
+
+// ....to get current time in h:m am/pm format
+const getCurrentTime = () => {
+  const now = new Date();
+  return now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+};
 
 const TaskLogTime = () => {
-  // mytsks sample data
-  const tasks = [
+  const initialTasks = [
     {
       id: 1,
       name: "UI Design",
@@ -34,37 +39,57 @@ const TaskLogTime = () => {
       deadline: "2024/10/18",
       status: "Pending",
     },
-    {
-      id: 4,
-      name: "Frontend Development",
-      priority: "High",
-      startTime: "02:00 PM",
-      endTime: "",
-      estimatedTime: "8h",
-      deadline: "2024/10/25",
-      status: "In Progress",
-    },
-    {
-      id: 5,
-      name: "Deployment",
-      priority: "Medium",
-      startTime: "",
-      endTime: "",
-      estimatedTime: "3h",
-      deadline: "2024/10/30",
-      status: "Pending",
-    },
   ];
 
-  // for handle actions based on status
-  const renderActionButton = (status) => {
-    switch (status) {
+  //  state for tasks
+  const [tasks, setTasks] = useState(initialTasks);
+
+  // Function to handle starting the task
+  const handleStartTask = (taskId) => {
+    const updatedTasks = tasks.map((task) =>
+      task.id === taskId
+        ? { ...task, startTime: getCurrentTime(), status: "In Progress" }
+        : task
+    );
+    setTasks(updatedTasks);
+  };
+
+  // Function     to handle ending the task
+  const handleEndTask = (taskId) => {
+    const updatedTasks = tasks.map((task) =>
+      task.id === taskId
+        ? { ...task, endTime: getCurrentTime(), status: "Completed" }
+        : task
+    );
+    setTasks(updatedTasks);
+  };
+
+  // Function to handle viewing completed task
+  const handleViewTask = () => {
+    alert("You have completed this task");
+  };
+
+  // Render action buttons based on task status in the table
+  const renderActionButton = (task) => {
+    switch (task.status) {
       case "Completed":
-        return <Button variant="primary">View</Button>;
+        return (
+          <Button variant="primary" onClick={handleViewTask}>
+            View
+          </Button>
+        );
       case "In Progress":
-        return <Button variant="success">End Task</Button>;
+        return (
+          <Button variant="success" onClick={() => handleEndTask(task.id)}>
+            End Task
+          </Button>
+        );
       case "Pending":
-        return <Button variant="warning">Start Task</Button>;
+        return (
+          <Button variant="warning" onClick={() => handleStartTask(task.id)}>
+            Start Task
+          </Button>
+        );
       default:
         return null;
     }
@@ -93,12 +118,12 @@ const TaskLogTime = () => {
               <tr key={task.id}>
                 <td>{task.name}</td>
                 <td>{task.priority}</td>
-                <td>{task.status === "Pending" ? "" : task.startTime}</td>
-                <td>{task.status === "Completed" ? task.endTime : ""}</td>
-                <td className='text-center'>{task.estimatedTime}</td>
+                <td>{task.startTime || ""}</td>
+                <td>{task.endTime || ""}</td>
+                <td className="text-center">{task.estimatedTime}</td>
                 <td>{task.deadline}</td>
                 <td>{task.status}</td>
-                <td>{renderActionButton(task.status)}</td>
+                <td>{renderActionButton(task)}</td>
               </tr>
             ))}
           </tbody>

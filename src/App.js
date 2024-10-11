@@ -46,6 +46,7 @@ import Administration from './Pages/Administration';
 import Settings from './Pages/Settings';
 import Payroll from "./Pages/Payroll";
 import DailyLog from './Pages/DailyLog';
+import TaskManagement from './Pages/TaskManagement';
 function App() {
     return (
         <Router>

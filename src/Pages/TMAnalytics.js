@@ -41,17 +41,7 @@ const TMAnalytics = ({ setActiveKey }) => {
       estimatedTime: "2h",
       deadline: "2024/10/18",
       status: "In Progress",
-    },
-    {
-      id: "004",
-      name: "Frontend Development",
-      assignedTo: "Saman Weerasinghe",
-      assignedBy: "Jayawardena",
-      priority: "High",
-      estimatedTime: "8h",
-      deadline: "2024/10/25",
-      status: "In Progress",
-    },
+    }
   ];
 
   const viewAllTasks = () => {
@@ -123,12 +113,6 @@ const TMAnalytics = ({ setActiveKey }) => {
           </tbody>
         </Table>
 
-        {/*this btn to go all task tab */}
-        <div className="d-flex justify-content-end mt-2">
-          <Button variant="primary" onClick={viewAllTasks}>
-            View All Tasks
-          </Button>
-        </div>
       </Card>
     </div>
   );

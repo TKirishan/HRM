@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Card, Nav, Tab } from "react-bootstrap";
 
 import Taskallocation from "./TaskAllocation";
-import Taskdetails from "./TaskDetails";
+
 import TasklogTime from "./TaskLogTime";
 import Taskreport from "./TaskReport";
 import Taskalert from "./TaskAlert";
@@ -22,9 +22,7 @@ const TaskManagement = () => {
             <Nav.Item>
               <Nav.Link eventKey="Taskallocation">Task Allocation</Nav.Link>
             </Nav.Item>
-            <Nav.Item>
-              <Nav.Link eventKey="Taskdetails">Task Details</Nav.Link>
-            </Nav.Item>
+
             <Nav.Item>
               <Nav.Link eventKey="TasklogTime">Log Time</Nav.Link>
             </Nav.Item>
@@ -46,9 +44,7 @@ const TaskManagement = () => {
             <Tab.Pane eventKey="Taskallocation">
               <Taskallocation setActiveKey={setActiveKey} />{" "}
             </Tab.Pane>
-            <Tab.Pane eventKey="Taskdetails">
-              <Taskdetails setActiveKey={setActiveKey} />{" "}
-            </Tab.Pane>
+
             <Tab.Pane eventKey="TasklogTime">
               <TasklogTime setActiveKey={setActiveKey} />{" "}
             </Tab.Pane>
